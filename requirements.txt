@@ -1,0 +1,2 @@
+tls-client>=0.2.2
+requests
