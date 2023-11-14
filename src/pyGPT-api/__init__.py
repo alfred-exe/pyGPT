@@ -107,7 +107,7 @@ class AI():
 
         if not auto_continue or not finish_details == "max_tokens":
             return
-        print(message)
+            
         message = message.strip("\n")
         for i in self.continue_write(conversation_id=cid, model=model, auto_continue=False):
             i["message"] = message + i["message"]
@@ -170,7 +170,7 @@ class AI():
                 conversation_id = None
                 parent_id = str(uuid4())
         model = model or ("text-davinci-002-render-sha" if self.model == "gpt-3.5" else None) or "text-davinci-002-render-sha"
-        print(messages)
+        
         data = {
             "action": "next",
             "messages": messages,
