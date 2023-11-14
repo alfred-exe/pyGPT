@@ -1,0 +1,2 @@
+class ChatGPTError(Exception):
+    pass
