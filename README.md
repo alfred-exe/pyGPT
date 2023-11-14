@@ -12,7 +12,7 @@ pip install pyGPT_api
 ## Getting started
 An access token is required for this package to run correctly. You can get yours [here](https://chat.openai.com/api/auth/session) or open the [chat.openai.com](https://chat.openai.com) webpage, access the developer console, and get the token from `Application` -> `Cookies` -> `__Secure-next-auth.session-token`.
 
-Below is a basic example that will create an infinitely looping conversation.
+Below is a basic example that will let you converse with ChatGPT as much as you'd like.
 ```py
 from pyGPT_api import AI
 
