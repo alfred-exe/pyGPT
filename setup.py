@@ -4,7 +4,7 @@ with open('README.md', encoding='utf8') as f:
     long_description = f.read()
 
 setup(
-    name="pyGPT",
+    name="pyGPT-api",
     version="0.1.0",
     description="An unofficial API allowing free interaction with ChatGPT in Python",
     long_description=long_description,
