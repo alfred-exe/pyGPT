@@ -14,7 +14,7 @@ An access token is required for this package to run correctly. You can get yours
 
 Below is a basic example that will create an infinitely looping conversation.
 ```py
-from pyGPT-api import AI
+from pyGPT_api import AI
 from uuid import uuid4
 
 ai = AI("your_token_here")
