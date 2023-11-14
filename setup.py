@@ -5,7 +5,7 @@ with open("README.md", encoding="utf-8") as file:
 
 setup(
     name="pyGPT-api",
-    version="0.1.1",
+    version="0.1.2",
     description="An unofficial API allowing free interaction with ChatGPT in Python",
     long_description=long_description,
     long_description_content_type='text/markdown',
