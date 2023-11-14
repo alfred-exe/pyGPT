@@ -15,12 +15,11 @@ An access token is required for this package to run correctly. You can get yours
 Below is a basic example that will create an infinitely looping conversation.
 ```py
 from pyGPT_api import AI
-from uuid import uuid4
 
 ai = AI("your_token_here")
 while True:
     message = ""
-    for data in ai.send_message(input(" > "), None, str(uuid4())):
+    for data in ai.send_message(input(" > ")):
         message = data["message"]
     print("\nChatGPT:", message, "\n")
 ```
