@@ -1,7 +1,7 @@
 from setuptools import setup, find_namespace_packages
 
-with open('README.md', encoding='utf8') as f:
-    long_description = f.read()
+with open("README.md", encoding="utf-8") as file:
+    long_description = file.read()
 
 setup(
     name="pyGPT-api",
