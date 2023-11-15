@@ -6,8 +6,12 @@ An (unofficial) [ChatGPT](https://chat.openai.com/) API made by yoinking code fr
 
 ## Installation
 ```bash
-pip install pyGPT_api
+pip install pyGPT-api
 ```
+
+## Requirements
+[`tls-client`](https://github.com/FlorianREGAZ/Python-Tls-Client)
+Python >= 3.9
 
 ## Getting started
 An access token is required for this package to run correctly. You can get yours [here](https://chat.openai.com/api/auth/session) or open the [chat.openai.com](https://chat.openai.com) webpage, access the developer console, and get the token from `Application` -> `Cookies` -> `__Secure-next-auth.session-token`.
