@@ -107,7 +107,7 @@ class AI():
 
         if not auto_continue or not finish_details == "max_tokens":
             return
-            
+
         message = message.strip("\n")
         for i in self.continue_write(conversation_id=cid, model=model, auto_continue=False):
             i["message"] = message + i["message"]
@@ -170,7 +170,7 @@ class AI():
                 conversation_id = None
                 parent_id = str(uuid4())
         model = model or ("text-davinci-002-render-sha" if self.model == "gpt-3.5" else None) or "text-davinci-002-render-sha"
-        
+
         data = {
             "action": "next",
             "messages": messages,
@@ -239,3 +239,9 @@ class AI():
     def reset_chat(self): # basically a new chat function
         self.conversation_id = None
         self.parent_id = str(uuid4())
+
+    def set_custom_instructions(self, ai_instructions : str = "", user_information : str = "", enable_for_new_chats : bool = True):
+        return self.request("/backend-api/user_system_messages", "POST", json={"about_model_message": ai_instructions, "about_user_message": user_information, "enabled": enable_for_new_chats})
+
+    def get_suggested_prompts(self, limit : int = 4, offset : int = 0):
+        return self.request(f"/backend-api/prompt_library/?limit={limit}&offset={offset}", "GET").json()
