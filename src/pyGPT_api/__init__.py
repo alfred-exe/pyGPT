@@ -41,14 +41,14 @@ class AI():
             response = self.session.patch(link, headers=headers, data=data, json=json, **kwargs)
         return response
 
-    def __check_fields__(self, data : dict) -> bool:
+    def __check_fields__(self, data : dict):
         try:
             data["message"]["content"]
         except (TypeError, KeyError):
             return False
         return True
 
-    def __send_request__(self, data : dict, auto_continue : bool = False, **kwargs) -> Generator[dict, None, None]:
+    def __send_request__(self, data : dict, auto_continue : bool = False, **kwargs):
         cid, pid = data["conversation_id"], data["parent_message_id"]
         message = ""
         
@@ -84,7 +84,7 @@ class AI():
                 author = metadata.get("author", {}) or line["message"].get("author", {})
                 if (line["message"].get("content") and line["message"]["content"].get("parts") and len(line["message"]["content"]["parts"]) > 0):
                     message_exists = True
-            message : str = (line["message"]["content"]["parts"][0] if message_exists else "")
+            message = (line["message"]["content"]["parts"][0] if message_exists else "")
             model = metadata.get("model_slug", None)
             finish_details = metadata.get("finish_details", {"type": None})["type"]
             yield {
@@ -113,7 +113,7 @@ class AI():
             i["message"] = message + i["message"]
             yield i
 
-    def continue_write(self, conversation_id : str = None, parent_id : str = "", model : str = "", auto_continue : bool = False) -> Generator[dict, None, None]:
+    def continue_write(self, conversation_id : str = None, parent_id : str = "", model : str = None, auto_continue : bool = False):
         if parent_id and not conversation_id:
             raise errors.ChatGPTError("conversation_id must be set once parent_id is set")
         
@@ -143,7 +143,7 @@ class AI():
         }
         yield from self.__send_request__(data, auto_continue=auto_continue)
             
-    def post_messages(self, messages : list[dict], conversation_id : str = None, parent_id : str = None, plugin_ids : list = None, model : str = None, auto_continue : bool = False, **kwargs) -> Generator[dict, None, None]:
+    def post_messages(self, messages : list, conversation_id : str = None, parent_id : str = None, model : str = None, auto_continue : bool = False, **kwargs):
         if plugin_ids is None:
             plugin_ids = []
         if parent_id and not conversation_id:
@@ -179,13 +179,10 @@ class AI():
             "model": model,
             "history_and_training_disabled": self.disable_history,
         }
-        #plugin_ids = self.config.get("plugin_ids", []) or plugin_ids
-        if len(plugin_ids) > 0 and not conversation_id:
-            data["plugin_ids"] = plugin_ids
-
+        
         yield from self.__send_request__(data, auto_continue=auto_continue)
 
-    def get_conversations(self, offset : int = None, limit : int = None, encoding : str = None) -> list:
+    def get_conversations(self, offset : int = None, limit : int = None, encoding : str = None):
         response = self.request(f"/backend-api/conversations?{f'offset={offset}' if offset != None else ''}{f'&limit={limit}' if limit != None else ''}", "GET")
 
         if encoding is not None:
@@ -193,7 +190,7 @@ class AI():
         data = loads(response.text)
         return data["items"]
 
-    def get_message_history(self, conversation_id: str, encoding: str = None) -> dict:
+    def get_message_history(self, conversation_id : str, encoding : str = None):
         response = self.request(f"/backend-api/conversation/{conversation_id}", "GET")
 
         if encoding is not None:
@@ -227,14 +224,6 @@ class AI():
         
     def delete_conversations(self):
         return self.request(f"/backend-api/conversations", "PATCH", data="{\"is_visible\": false}")
-
-    #def delete_messages(self, conversation_id : str, amount : int = 1):
-        #history = self.get_message_history(conversation_id)
-        #parent_id = list(history["mapping"].values())[-amount*2-2]["id"]
-        #print(parent_id)
-        #print(list(history["mapping"].values())[-amount*2-2]["message"]["content"]["parts"][0])
-        #for _ in self.send_message(list(history["mapping"].values())[-amount*2-2]["message"]["content"]["parts"][0], conversation_id, parent_id):
-        #    pass
 
     def reset_chat(self): # basically a new chat function
         self.conversation_id = None
